@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/openmymai/modern_webapp_in_golang/pkg/handlers"
 )
 
 const portNumber = ":8080"
@@ -34,8 +36,8 @@ func main() {
 	// 	fmt.Println(fmt.Sprintf("Number of bytes written: %d", n))
 	// })
 
-	http.HandleFunc("/", Home)
-	http.HandleFunc("/about", About)
+	http.HandleFunc("/", handlers.Home)
+	http.HandleFunc("/about", handlers.About)
 	// http.HandleFunc("/divide", Divide)
 
 	fmt.Println(fmt.Sprintf("Starting application on port %s", portNumber))
