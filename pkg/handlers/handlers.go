@@ -3,22 +3,44 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/openmymai/modern_webapp_in_golang/pkg/config"
+	"github.com/openmymai/modern_webapp_in_golang/pkg/models"
 	"github.com/openmymai/modern_webapp_in_golang/pkg/render"
 )
 
-// Home is the home page handler
-func Home(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, "home.page.tmpl")
+// Repo the repository used by the handlers
+var Repo *Repository
+
+// Repository is the repository type
+type Repository struct {
+	App *config.AppConfig
 }
 
-// About is the about page handler
-func About(w http.ResponseWriter, r *http.Request) {
-	// sum := addValues(2, 2)
-	// _, _ = fmt.Fprintf(w, fmt.Sprintf("This is About page and 2 + 2 is %d", sum))
-	render.RenderTemplate(w, "about.page.tmpl")
+// NewRepo creates a new repository
+func NewRepo(a *config.AppConfig) *Repository {
+	return &Repository{
+		App: a,
+	}
 }
 
-// AddValues adds two integers
-func addValues(x, y int) int {
-	return x + y
+// NewHandlers sets the repository for the handlers
+func NewHandlers(r *Repository) {
+	Repo = r
+}
+
+// Home is the handler for the home page
+func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, "home.page.tmpl", &models.TemplateData{})
+}
+
+// About is the handler for the about page
+func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
+	// perform some logic
+	stringMap := make(map[string]string)
+	stringMap["test"] = "Hello, again"
+
+	// send data to the template
+	render.RenderTemplate(w, "about.page.tmpl", &models.TemplateData{
+		StringMap: stringMap,
+	})
 }
